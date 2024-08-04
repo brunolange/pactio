@@ -30,7 +30,7 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
--   repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.374
-    hooks:
-    -   id: pyright
+# -   repo: https://github.com/RobertCraigie/pyright-python
+#     rev: v1.1.374
+#     hooks:
+#     -   id: pyright

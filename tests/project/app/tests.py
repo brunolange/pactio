@@ -14,7 +14,7 @@ class TestPactio(TestCase):
 
 def test_broken_pact(client: Client):
     response = client.post(
-        "/app/my_view",
+        "/app/echo",
         json.dumps({"a": 1}),
         content_type="application/json",
     )
@@ -30,7 +30,7 @@ def test_maintained_pact(client: Client):
         "a_list_of_ints": [1, 1, 3, 5, 8, 13, 21],
     }
     response = client.post(
-        "/app/my_view",
+        "/app/echo",
         json.dumps(data),
         content_type="application/json",
     )

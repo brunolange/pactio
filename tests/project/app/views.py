@@ -13,5 +13,5 @@ class MyModel(BaseModel):
 
 
 @pactio
-def my_view(request, my_model: MyModel):
+def echo(request, my_model: MyModel):
     return JsonResponse(my_model.model_dump())

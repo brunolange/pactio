@@ -1,10 +1,10 @@
 import json
 from http import HTTPStatus
 
-from django.test import Client, TestCase
+from django.test import Client, TestCase, modify_settings
 
 
-class TestPactio(TestCase):
+class TestPactioMiddleware(TestCase):
     def test_broken_pact(self):
         test_broken_pact(self.client)
 
@@ -31,6 +31,45 @@ def test_maintained_pact(client: Client):
     }
     response = client.post(
         "/app/echo",
+        json.dumps(data),
+        content_type="application/json",
+    )
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == data
+
+
+@modify_settings(
+    MIDDLEWARE={
+        "remove": "pactio.middleware.PactioMiddleware",
+    }
+)
+class TestPactioDecorator(TestCase):
+    # def test_broken_pact_with_decorator(self):
+    #     test_broken_pact_with_decorator(self.client)
+
+    def test_maintained_pact_with_decorator(self):
+        test_maintained_pact_with_decorator(self.client)
+
+
+def test_broken_pact_with_decorator(client: Client):
+    response = client.post(
+        "/app/decorated_echo",
+        json.dumps({"a": 1}),
+        content_type="application/json",
+    )
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+
+def test_maintained_pact_with_decorator(client: Client):
+    data = {
+        "a_str": "hello",
+        "an_int": 42,
+        "a_bool": True,
+        "a_float": 3.14,
+        "a_list_of_ints": [1, 1, 3, 5, 8, 13, 21],
+    }
+    response = client.post(
+        "/app/decorated_echo",
         json.dumps(data),
         content_type="application/json",
     )

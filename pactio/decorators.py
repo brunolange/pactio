@@ -32,7 +32,7 @@ def pactio(fn):
         try:
             data = {
                 "application/json": lambda: json.loads(request.body),
-                "application/x-www-form-urlencoded": lambda: request.form,
+                # "application/x-www-form-urlencoded": lambda: request.form,  # TODO: django-ify
             }[content_type]()
         except KeyError:
             data = NoData

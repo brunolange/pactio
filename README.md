@@ -32,6 +32,7 @@ class UserData(BaseModel):
     age: int
     accept_terms: bool
 
+
 def register(request, user: UserData):
     if not user.accept_terms:
         ...

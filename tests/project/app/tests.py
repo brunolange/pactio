@@ -20,6 +20,13 @@ def test_broken_pact(client: Client):
     )
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
+    response = client.post(
+        "/app/echo",
+        "this is clearly not json",
+        content_type="application/json",
+    )
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
 
 def test_maintained_pact(client: Client):
     data = {

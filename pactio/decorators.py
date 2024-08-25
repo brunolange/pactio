@@ -34,6 +34,11 @@ def pactio(fn):
                 "application/json": lambda: json.loads(request.body),
                 # "application/x-www-form-urlencoded": lambda: request.form,  # TODO: django-ify
             }[content_type]()
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"message": "bad request"},
+                status=HTTPStatus.BAD_REQUEST,
+            )
         except KeyError:
             data = NoData
 

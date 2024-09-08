@@ -8,8 +8,11 @@ class TestPactioMiddleware(TestCase):
     def test_broken_pact(self):
         test_broken_pact(self.client)
 
-    def test_maintained_pact(self):
-        test_maintained_pact(self.client)
+    def test_maintained_pact_with_json(self):
+        test_maintained_pact_with_json(self.client)
+
+    def test_maintained_pact_with_form(self):
+        test_maintained_pact_with_form(self.client)
 
 
 def test_broken_pact(client: Client):
@@ -28,7 +31,20 @@ def test_broken_pact(client: Client):
     assert response.status_code == HTTPStatus.BAD_REQUEST
 
 
-def test_maintained_pact(client: Client):
+def test_maintained_pact_with_form(client: Client):
+    data = {
+        "a_str": "hello",
+        "an_int": 42,
+        "a_bool": True,
+        "a_float": 3.14,
+        "a_list_of_ints": [1, 1, 3, 5, 8, 13, 21],
+    }
+    response = client.post("/app/echo", data=data)
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == data
+
+
+def test_maintained_pact_with_json(client: Client):
     data = {
         "a_str": "hello",
         "an_int": 42,
